@@ -1,6 +1,6 @@
 package com.ems.eventmanagementspring.models;
 
-public enum AppUserEventStatus {
+public enum MemberStatus {
 
     ACCEPTED,
     DECLINED

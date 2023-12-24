@@ -1,6 +1,6 @@
 package com.ems.eventmanagementspring.models;
 
-public enum AppUserRole {
+public enum MemberRole {
 
     ATTENDEE,
     SPEAKER

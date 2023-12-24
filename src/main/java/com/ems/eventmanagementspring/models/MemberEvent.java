@@ -7,18 +7,19 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "appUserEvent")
-public class AppUserEvent {
+@Entity(name = "memberEvent")
+public class MemberEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user_event", updatable = false)
-    private Long idAppUserEvent;
+    //TODO maybe names attribute can be omitted when is the same as by default
+    @Column(name = "idMemberEvent", updatable = false)
+    private Long idMemberEvent;
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user", nullable = false)
-    private AppUser appUser;
+    @JoinColumn(name = "idMember", nullable = false)
+    private Member member;
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,7 +28,7 @@ public class AppUserEvent {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 32, nullable = false)
-    private AppUserEventStatus status;
+    private MemberStatus status;
 
     @Column(nullable = false)
     private boolean isInvited;

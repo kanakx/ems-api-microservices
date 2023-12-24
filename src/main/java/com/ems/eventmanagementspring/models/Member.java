@@ -12,12 +12,12 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "appUser")
-public class AppUser {
+@Entity(name = "member")
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user", updatable = false)
+    @Column(name = "idMember", updatable = false)
     private Long idAppUser;
 
     @Column(length = 100, nullable = false)
@@ -31,9 +31,9 @@ public class AppUser {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 100, nullable = false)
-    private AppUserRole role;
+    private MemberRole role;
 
-    @OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<AppUserEvent> userEvents;
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<MemberEvent> memberEvents;
 
 }

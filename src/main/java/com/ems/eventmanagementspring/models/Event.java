@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -45,6 +44,6 @@ public class Event {
     private boolean isPublic;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<AppUserEvent> userEvents;
+    private List<MemberEvent> memberEvents;
 
 }
