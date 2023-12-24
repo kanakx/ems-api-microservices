@@ -5,11 +5,10 @@ services:
     image: mysql:latest
     container_name: docker-mysql
     environment:
-      # The default root user is 'root'
-      MYSQL_ROOT_PASSWORD: root-pwd
-      # Creating a specific user for application use
-      MYSQL_USER: ems_user
-      MYSQL_PASSWORD: user-pwd
-      MYSQL_DATABASE: ems_db
+      MYSQL_DATABASE: ems-db
+      MYSQL_ROOT_USER: ems-root
+      MYSQL_ROOT_PASSWORD: ems-root-pwd
+      MYSQL_USER: ems-user
+      MYSQL_PASSWORD: ems-user-pwd
     ports:
       - "3306:3306"
