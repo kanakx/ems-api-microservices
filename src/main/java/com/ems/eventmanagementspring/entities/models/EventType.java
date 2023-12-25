@@ -1,4 +1,4 @@
-package com.ems.eventmanagementspring.models;
+package com.ems.eventmanagementspring.entities.models;
 
 public enum EventType {
 

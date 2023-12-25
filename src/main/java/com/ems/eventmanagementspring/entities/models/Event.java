@@ -1,4 +1,4 @@
-package com.ems.eventmanagementspring.models;
+package com.ems.eventmanagementspring.entities.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
