@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "memberEvent")
+@Entity
 public class MemberEvent {
 
     @Id

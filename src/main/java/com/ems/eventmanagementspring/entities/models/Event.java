@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "event")
+@Entity
 public class Event {
 
     @Id
