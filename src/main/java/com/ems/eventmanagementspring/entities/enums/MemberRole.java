@@ -1,4 +1,4 @@
-package com.ems.eventmanagementspring.entities.models;
+package com.ems.eventmanagementspring.entities.enums;
 
 public enum MemberRole {
 

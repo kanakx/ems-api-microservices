@@ -1,5 +1,6 @@
 package com.ems.eventmanagementspring.entities.models;
 
+import com.ems.eventmanagementspring.entities.enums.MemberRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,7 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idMember", updatable = false)
-    private Long idAppUser;
+    private Long idMember;
 
     @Column(length = 100, nullable = false)
     private String username;

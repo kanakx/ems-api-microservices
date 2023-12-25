@@ -1,5 +1,6 @@
 package com.ems.eventmanagementspring.entities.models;
 
+import com.ems.eventmanagementspring.entities.enums.MemberEventStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,7 +29,7 @@ public class MemberEvent {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 32, nullable = false)
-    private MemberStatus status;
+    private MemberEventStatus status;
 
     @Column(nullable = false)
     private boolean isInvited;

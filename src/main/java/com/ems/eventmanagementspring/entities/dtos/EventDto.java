@@ -1,6 +1,6 @@
 package com.ems.eventmanagementspring.entities.dtos;
 
-import com.ems.eventmanagementspring.entities.models.EventType;
+import com.ems.eventmanagementspring.entities.enums.EventType;
 import lombok.Builder;
 import lombok.Data;
 
