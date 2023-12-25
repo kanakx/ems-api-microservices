@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -35,6 +36,6 @@ public class Member {
     private MemberRole role;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<MemberEvent> memberEvents;
+    private List<MemberEvent> memberEventList = new ArrayList<>();
 
 }

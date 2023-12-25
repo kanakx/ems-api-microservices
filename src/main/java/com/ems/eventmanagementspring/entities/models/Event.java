@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,7 +20,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_event", updatable = false)
+    @Column(name = "idEvent", updatable = false)
     private Long idEvent;
 
     @Column(length = 100, nullable = false)
@@ -45,6 +46,6 @@ public class Event {
     private boolean isPublic;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<MemberEvent> memberEvents;
+    private List<MemberEvent> memberEventList = new ArrayList<>();
 
 }

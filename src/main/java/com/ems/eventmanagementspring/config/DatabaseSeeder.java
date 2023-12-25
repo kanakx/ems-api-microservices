@@ -24,6 +24,37 @@ public class DatabaseSeeder {
             MemberRepository memberRepository
     ) {
         return args -> {
+            Event event1 = Event.builder()
+                    .name("event1")
+                    .type(EventType.ACTIVE)
+                    .startTimestamp(LocalDateTime.now())
+                    .endTimestamp(LocalDateTime.now().plusDays(1))
+                    .locationName("location1")
+                    .description("description1")
+                    .isPublic(true)
+                    .build();
+            Event event2 = Event.builder()
+                    .name("event2")
+                    .type(EventType.CANCELLED)
+                    .startTimestamp(LocalDateTime.now())
+                    .endTimestamp(LocalDateTime.now().plusDays(1))
+                    .locationName("location1")
+                    .description("description2")
+                    .isPublic(true)
+                    .build();
+            Event event3 = Event.builder()
+                    .name("event3")
+                    .type(EventType.ACTIVE)
+                    .startTimestamp(LocalDateTime.now())
+                    .endTimestamp(LocalDateTime.now().plusDays(1))
+                    .locationName("location3")
+                    .description("description2")
+                    .isPublic(false)
+                    .build();
+
+            eventRepository.saveAll(List.of(event1, event2, event3));
+
+
             Member member1 = Member.builder()
                     .username("username1")
                     .email("member1@mail.com")
@@ -36,38 +67,9 @@ public class DatabaseSeeder {
                     .password("password")
                     .role(MemberRole.ATTENDEE)
                     .build();
-            memberRepository.saveAll(List.of(member1, member2));
 
-            Event event1 = Event.builder()
-                    .name("event1")
-                    .type(EventType.ACTIVE)
-                    .startTimestamp(LocalDateTime.now())
-                    .endTimestamp(LocalDateTime.now().plusDays(1))
-                    .locationName("location1")
-                    .description("description1")
-                    .isPublic(true)
-                    .build();
+//            memberRepository.saveAll(List.of(member1, member2));
 
-            Event event2 = Event.builder()
-                    .name("event2")
-                    .type(EventType.CANCELLED)
-                    .startTimestamp(LocalDateTime.now())
-                    .endTimestamp(LocalDateTime.now().plusDays(1))
-                    .locationName("location1")
-                    .description("description2")
-                    .isPublic(true)
-                    .build();
-
-            Event event3 = Event.builder()
-                    .name("event3")
-                    .type(EventType.ACTIVE)
-                    .startTimestamp(LocalDateTime.now())
-                    .endTimestamp(LocalDateTime.now().plusDays(1))
-                    .locationName("location3")
-                    .description("description2")
-                    .isPublic(false)
-                    .build();
-            eventRepository.saveAll(List.of(event1, event2, event3));
 
             MemberEvent memberEvent1 = MemberEvent.builder()
                     .member(member1)
@@ -75,14 +77,12 @@ public class DatabaseSeeder {
                     .status(MemberEventStatus.ACCEPTED)
                     .isInvited(true)
                     .build();
-
             MemberEvent memberEvent2 = MemberEvent.builder()
                     .member(member1)
                     .event(event2)
                     .status(MemberEventStatus.DECLINED)
                     .isInvited(true)
                     .build();
-
             MemberEvent memberEvent3 = MemberEvent.builder()
                     .member(member2)
                     .event(event3)
@@ -90,11 +90,9 @@ public class DatabaseSeeder {
                     .isInvited(true)
                     .build();
 
-            event1.setMemberEvents(List.of(memberEvent1, memberEvent2));
-            event1.setMemberEvents(List.of(memberEvent3));
-            eventRepository.saveAll(List.of(event1, event2));
+             member1.setMemberEventList(List.of(memberEvent1, memberEvent2));
+             member2.setMemberEventList(List.of(memberEvent3));
+             memberRepository.saveAll(List.of(member1, member2));
         };
-
     }
-
 }
