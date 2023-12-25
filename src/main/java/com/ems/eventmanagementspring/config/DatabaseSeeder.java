@@ -36,8 +36,7 @@ public class DatabaseSeeder {
                     .password("password")
                     .role(MemberRole.ATTENDEE)
                     .build();
-            memberRepository.save(member1);
-            memberRepository.save(member2);
+            memberRepository.saveAll(List.of(member1, member2));
 
             Event event1 = Event.builder()
                     .name("event1")
@@ -51,7 +50,7 @@ public class DatabaseSeeder {
 
             Event event2 = Event.builder()
                     .name("event2")
-                    .type(EventType.ACTIVE)
+                    .type(EventType.CANCELLED)
                     .startTimestamp(LocalDateTime.now())
                     .endTimestamp(LocalDateTime.now().plusDays(1))
                     .locationName("location1")
@@ -68,6 +67,7 @@ public class DatabaseSeeder {
                     .description("description2")
                     .isPublic(false)
                     .build();
+            eventRepository.saveAll(List.of(event1, event2, event3));
 
             MemberEvent memberEvent1 = MemberEvent.builder()
                     .member(member1)
