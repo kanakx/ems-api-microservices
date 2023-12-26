@@ -1,6 +1,6 @@
 package com.ems.eventmanagementspring.entities.enums;
 
-public enum MemberRole {
+public enum AttendeeRole {
 
     ATTENDEE,
     SPEAKER

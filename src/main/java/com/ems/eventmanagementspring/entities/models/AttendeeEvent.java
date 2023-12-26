@@ -13,7 +13,6 @@ public class AttendeeEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //TODO maybe names attribute can be omitted when is the same as by default
     @Column(updatable = false)
     private Long idAttendeeEvent;
 

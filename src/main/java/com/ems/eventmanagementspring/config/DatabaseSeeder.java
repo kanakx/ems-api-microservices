@@ -2,7 +2,7 @@ package com.ems.eventmanagementspring.config;
 
 import com.ems.eventmanagementspring.entities.enums.EventType;
 import com.ems.eventmanagementspring.entities.enums.MemberEventStatus;
-import com.ems.eventmanagementspring.entities.enums.MemberRole;
+import com.ems.eventmanagementspring.entities.enums.AttendeeRole;
 import com.ems.eventmanagementspring.entities.models.Attendee;
 import com.ems.eventmanagementspring.entities.models.Event;
 import com.ems.eventmanagementspring.entities.models.AttendeeEvent;
@@ -79,12 +79,12 @@ public class DatabaseSeeder {
 
             Attendee attendee1 = Attendee.builder()
                     .fullName("John Doe 1")
-                    .role(MemberRole.SPEAKER)
+                    .role(AttendeeRole.SPEAKER)
                     .build();
 
             Attendee attendee2 = Attendee.builder()
                     .fullName("John Doe 2")
-                    .role(MemberRole.ATTENDEE)
+                    .role(AttendeeRole.ATTENDEE)
                     .build();
 
 //            memberRepository.saveAll(List.of(member1, member2));

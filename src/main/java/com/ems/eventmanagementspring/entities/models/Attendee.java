@@ -1,6 +1,6 @@
 package com.ems.eventmanagementspring.entities.models;
 
-import com.ems.eventmanagementspring.entities.enums.MemberRole;
+import com.ems.eventmanagementspring.entities.enums.AttendeeRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +27,7 @@ public class Attendee {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 100, nullable = false)
-    private MemberRole role;
+    private AttendeeRole role;
 
     @OneToMany(mappedBy = "attendee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AttendeeEvent> attendeeEventList = new ArrayList<>();
