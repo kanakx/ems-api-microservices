@@ -22,8 +22,14 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
 
     @Override
-    public List<EventDto> findAll() {
-        List<Event> eventList = eventRepository.findAll();
+    public List<EventDto> findAll(Boolean isPublic) {
+        List<Event> eventList;
+
+        if (isPublic != null) {
+            eventList = eventRepository.findAllByIsPublic(isPublic);
+        } else {
+            eventList = eventRepository.findAll();
+        }
 
         return eventList.stream()
                 .map(eventMapper::mapToDto)

@@ -21,6 +21,6 @@ public class EventDto {
     private LocalDateTime endTimestamp;
     private String locationName;
     private String description;
-    private boolean isPublic;
+    private Boolean isPublic;
 
 }

@@ -51,7 +51,7 @@ public class DatabaseSeeder {
                     .endTimestamp(LocalDateTime.parse("2023-05-30T23:00:00"))
                     .locationName("Austin")
                     .description("A festival celebrating the best of live music performances.")
-                    .isPublic(true)
+                    .isPublic(false)
                     .build();
 
             Event event4 = Event.builder()
@@ -97,13 +97,13 @@ public class DatabaseSeeder {
                     .member(member1)
                     .event(event1)
                     .status(MemberEventStatus.ACCEPTED)
-                    .isInvited(true)
+                    .isInvited(false)
                     .build();
             MemberEvent memberEvent2 = MemberEvent.builder()
                     .member(member1)
                     .event(event2)
                     .status(MemberEventStatus.DECLINED)
-                    .isInvited(true)
+                    .isInvited(false)
                     .build();
             MemberEvent memberEvent3 = MemberEvent.builder()
                     .member(member2)
