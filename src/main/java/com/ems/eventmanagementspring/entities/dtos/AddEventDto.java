@@ -20,5 +20,6 @@ public class AddEventDto {
     private LocalDateTime endTimestamp;
     private String locationName;
     private String description;
+    private Boolean isPublic;
 
 }
