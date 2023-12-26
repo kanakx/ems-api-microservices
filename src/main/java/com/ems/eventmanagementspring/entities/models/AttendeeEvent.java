@@ -9,22 +9,22 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class MemberEvent {
+public class AttendeeEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //TODO maybe names attribute can be omitted when is the same as by default
-    @Column(name = "idMemberEvent", updatable = false)
-    private Long idMemberEvent;
+    @Column(updatable = false)
+    private Long idAttendeeEvent;
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idMember", nullable = false)
-    private Member member;
+    @JoinColumn(name = "id_attendee", nullable = false)
+    private Attendee attendee;
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_event", nullable = false)
+    @JoinColumn(nullable = false)
     private Event event;
 
     @Enumerated(EnumType.STRING)

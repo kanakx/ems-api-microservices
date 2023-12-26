@@ -20,7 +20,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idEvent", updatable = false)
+    @Column(updatable = false)
     private Long idEvent;
 
     @Column(length = 100, nullable = false)
@@ -46,6 +46,6 @@ public class Event {
     private Boolean isPublic;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<MemberEvent> memberEventList = new ArrayList<>();
+    private List<AttendeeEvent> attendeeEventList = new ArrayList<>();
 
 }

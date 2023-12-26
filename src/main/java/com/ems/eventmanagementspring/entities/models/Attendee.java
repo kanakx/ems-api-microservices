@@ -15,27 +15,21 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Member {
+public class Attendee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idMember", updatable = false)
-    private Long idMember;
+    @Column(updatable = false)
+    private Long idAttendee;
 
     @Column(length = 100, nullable = false)
-    private String username;
-
-    @Column(length = 100, nullable = false)
-    private String email;
-
-    @Column(length = 100, nullable = false)
-    private String password;
+    private String fullName;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 100, nullable = false)
     private MemberRole role;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<MemberEvent> memberEventList = new ArrayList<>();
+    @OneToMany(mappedBy = "attendee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<AttendeeEvent> attendeeEventList = new ArrayList<>();
 
 }

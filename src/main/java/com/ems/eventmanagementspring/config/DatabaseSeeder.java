@@ -3,11 +3,11 @@ package com.ems.eventmanagementspring.config;
 import com.ems.eventmanagementspring.entities.enums.EventType;
 import com.ems.eventmanagementspring.entities.enums.MemberEventStatus;
 import com.ems.eventmanagementspring.entities.enums.MemberRole;
+import com.ems.eventmanagementspring.entities.models.Attendee;
 import com.ems.eventmanagementspring.entities.models.Event;
-import com.ems.eventmanagementspring.entities.models.Member;
-import com.ems.eventmanagementspring.entities.models.MemberEvent;
+import com.ems.eventmanagementspring.entities.models.AttendeeEvent;
 import com.ems.eventmanagementspring.repositories.EventRepository;
-import com.ems.eventmanagementspring.repositories.MemberRepository;
+import com.ems.eventmanagementspring.repositories.AttendeeRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ public class DatabaseSeeder {
     @Bean
     CommandLineRunner commandLineRunner(
             EventRepository eventRepository,
-            MemberRepository memberRepository
+            AttendeeRepository attendeeRepository
     ) {
         return args -> {
             Event event1 = Event.builder()
@@ -77,44 +77,41 @@ public class DatabaseSeeder {
             eventRepository.saveAll(List.of(event1, event2, event3, event4, event5));
 
 
-            Member member1 = Member.builder()
-                    .username("username1")
-                    .email("member1@mail.com")
-                    .password("$2a$10$Ptba2XLlqTiKOWMMNpcKz.TnDiG8cLyC7TXquMKx6hGEjtoMGoL/S")
+            Attendee attendee1 = Attendee.builder()
+                    .fullName("John Doe 1")
                     .role(MemberRole.SPEAKER)
                     .build();
-            Member member2 = Member.builder()
-                    .username("username2")
-                    .email("member2@mail.com")
-                    .password("password")
+
+            Attendee attendee2 = Attendee.builder()
+                    .fullName("John Doe 2")
                     .role(MemberRole.ATTENDEE)
                     .build();
 
 //            memberRepository.saveAll(List.of(member1, member2));
 
 
-            MemberEvent memberEvent1 = MemberEvent.builder()
-                    .member(member1)
+            AttendeeEvent attendeeEvent1 = AttendeeEvent.builder()
+                    .attendee(attendee1)
                     .event(event1)
                     .status(MemberEventStatus.ACCEPTED)
                     .isInvited(false)
                     .build();
-            MemberEvent memberEvent2 = MemberEvent.builder()
-                    .member(member1)
+            AttendeeEvent attendeeEvent2 = AttendeeEvent.builder()
+                    .attendee(attendee1)
                     .event(event2)
                     .status(MemberEventStatus.DECLINED)
                     .isInvited(false)
                     .build();
-            MemberEvent memberEvent3 = MemberEvent.builder()
-                    .member(member2)
+            AttendeeEvent attendeeEvent3 = AttendeeEvent.builder()
+                    .attendee(attendee2)
                     .event(event3)
                     .status(MemberEventStatus.ACCEPTED)
                     .isInvited(true)
                     .build();
 
-             member1.setMemberEventList(List.of(memberEvent1, memberEvent2));
-             member2.setMemberEventList(List.of(memberEvent3));
-             memberRepository.saveAll(List.of(member1, member2));
+             attendee1.setAttendeeEventList(List.of(attendeeEvent1, attendeeEvent2));
+             attendee2.setAttendeeEventList(List.of(attendeeEvent3));
+             attendeeRepository.saveAll(List.of(attendee1, attendee2));
         };
     }
 }
