@@ -11,7 +11,6 @@ public interface EventMapper {
 
     EventDto mapToDto(Event event);
 
-
     @Mapping(target = "idEvent", ignore = true)
     Event mapToEntity(AddEventDto addEventDto);
 

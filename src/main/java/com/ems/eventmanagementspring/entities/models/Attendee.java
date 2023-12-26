@@ -27,7 +27,7 @@ public class Attendee {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 100, nullable = false)
-    private AttendeeRole role;
+    private AttendeeRole attendeeRole;
 
     @OneToMany(mappedBy = "attendee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AttendeeEvent> attendeeEventList = new ArrayList<>();

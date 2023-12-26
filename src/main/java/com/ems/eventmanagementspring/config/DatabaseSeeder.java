@@ -79,12 +79,12 @@ public class DatabaseSeeder {
 
             Attendee attendee1 = Attendee.builder()
                     .fullName("John Doe 1")
-                    .role(AttendeeRole.SPEAKER)
+                    .attendeeRole(AttendeeRole.SPEAKER)
                     .build();
 
             Attendee attendee2 = Attendee.builder()
                     .fullName("John Doe 2")
-                    .role(AttendeeRole.ATTENDEE)
+                    .attendeeRole(AttendeeRole.ATTENDEE)
                     .build();
 
 //            memberRepository.saveAll(List.of(member1, member2));
