@@ -2,7 +2,11 @@ package com.ems.eventmanagementspring.entities.enums;
 
 public enum EventType {
 
-    ACTIVE,
-    CANCELLED
+    CONFERENCE,
+    SEMINAR,
+    WORKSHOP,
+    EXHIBITION,
+    FESTIVAL,
+    MEETUP
 
 }

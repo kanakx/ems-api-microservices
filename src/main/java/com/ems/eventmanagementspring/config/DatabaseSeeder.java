@@ -25,34 +25,56 @@ public class DatabaseSeeder {
     ) {
         return args -> {
             Event event1 = Event.builder()
-                    .name("event1")
-                    .type(EventType.ACTIVE)
-                    .startTimestamp(LocalDateTime.now())
-                    .endTimestamp(LocalDateTime.now().plusDays(1))
-                    .locationName("location1")
-                    .description("description1")
+                    .name("Tech Conference 2023")
+                    .type(EventType.CONFERENCE)
+                    .startTimestamp(LocalDateTime.parse("2023-03-15T09:00:00"))
+                    .endTimestamp(LocalDateTime.parse("2023-03-15T17:00:00"))
+                    .locationName("New York")
+                    .description("An annual conference for tech enthusiasts and professionals.")
                     .isPublic(true)
-                    .build();
-            Event event2 = Event.builder()
-                    .name("event2")
-                    .type(EventType.CANCELLED)
-                    .startTimestamp(LocalDateTime.now())
-                    .endTimestamp(LocalDateTime.now().plusDays(1))
-                    .locationName("location1")
-                    .description("description2")
-                    .isPublic(true)
-                    .build();
-            Event event3 = Event.builder()
-                    .name("event3")
-                    .type(EventType.ACTIVE)
-                    .startTimestamp(LocalDateTime.now())
-                    .endTimestamp(LocalDateTime.now().plusDays(1))
-                    .locationName("location3")
-                    .description("description2")
-                    .isPublic(false)
                     .build();
 
-            eventRepository.saveAll(List.of(event1, event2, event3));
+            Event event2 = Event.builder()
+                    .name("Art & Design Expo")
+                    .type(EventType.EXHIBITION)
+                    .startTimestamp(LocalDateTime.parse("2023-04-22T10:00:00"))
+                    .endTimestamp(LocalDateTime.parse("2023-04-22T18:00:00"))
+                    .locationName("San Francisco")
+                    .description("Explore the latest trends in art and design.")
+                    .isPublic(true)
+                    .build();
+
+            Event event3 = Event.builder()
+                    .name("Live Music Festival")
+                    .type(EventType.FESTIVAL)
+                    .startTimestamp(LocalDateTime.parse("2023-05-30T12:00:00"))
+                    .endTimestamp(LocalDateTime.parse("2023-05-30T23:00:00"))
+                    .locationName("Austin")
+                    .description("A festival celebrating the best of live music performances.")
+                    .isPublic(true)
+                    .build();
+
+            Event event4 = Event.builder()
+                    .name("Entrepreneurs Meetup")
+                    .type(EventType.MEETUP)
+                    .startTimestamp(LocalDateTime.parse("2023-06-10T14:00:00"))
+                    .endTimestamp(LocalDateTime.parse("2023-06-10T20:00:00"))
+                    .locationName("Chicago")
+                    .description("A meetup for aspiring and established entrepreneurs.")
+                    .isPublic(true)
+                    .build();
+
+            Event event5 = Event.builder()
+                    .name("Health and Wellness Workshop")
+                    .type(EventType.WORKSHOP)
+                    .startTimestamp(LocalDateTime.parse("2023-07-05T09:00:00"))
+                    .endTimestamp(LocalDateTime.parse("2023-07-05T16:00:00"))
+                    .locationName("Seattle")
+                    .description("A workshop focused on health, wellness, and personal growth.")
+                    .isPublic(true)
+                    .build();
+
+            eventRepository.saveAll(List.of(event1, event2, event3, event4, event5));
 
 
             Member member1 = Member.builder()
