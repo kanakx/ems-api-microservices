@@ -16,6 +16,5 @@ public class AttendeeEventDto {
 //    private AttendeeDto attendee;
     private EventDto eventDto;
     private MemberEventStatus status;
-    private boolean isInvited;
 
 }

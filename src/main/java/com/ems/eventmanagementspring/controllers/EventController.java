@@ -16,10 +16,8 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping
-    public List<EventDto> findAll(
-            @RequestParam(required = false) Boolean isPublic
-            ) {
-        return eventService.findAll(isPublic);
+    public List<EventDto> findAll() {
+        return eventService.findAll();
     }
 
     @GetMapping("/{id}")

@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface EventService {
 
-    List<EventDto> findAll(Boolean isPublic);
+    List<EventDto> findAll();
     EventDto findById(Long id);
     EventDto save(AddEventDto addEventDto);
 

@@ -30,7 +30,7 @@ public class AttendeeEvent {
     @Column(length = 32, nullable = false)
     private MemberEventStatus status;
 
-    @Column(nullable = false)
-    private boolean isInvited;
+//    @Column(nullable = false)
+//    private boolean isInvited;
 
 }

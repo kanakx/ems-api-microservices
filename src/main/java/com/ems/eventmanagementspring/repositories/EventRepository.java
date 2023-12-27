@@ -10,8 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
-
-    List<Event> findAllByIsPublic(Boolean isPublic);
+    
     Optional<Event> findByNameAndStartTimestampAndLocationName(String name, LocalDateTime startTimestamp, String locationName);
 
 }
