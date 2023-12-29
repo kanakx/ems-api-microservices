@@ -10,6 +10,7 @@ import com.ems.eventmanagementspring.services.interfaces.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +43,7 @@ public class EventServiceImpl implements EventService {
         return eventMapper.mapToDto(event);
     }
 
+    @Transactional
     @Override
     public EventDto save(AddEventDto addEventDto) {
         Optional<Event> eventOptional = eventRepository.findByNameAndStartTimestampAndLocationName(addEventDto.getName(), addEventDto.getStartTimestamp(), addEventDto.getLocationName());
@@ -49,7 +51,7 @@ public class EventServiceImpl implements EventService {
         eventOptional.ifPresent(event -> {
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
-                    .message("Workout with such name, start time and location name already exists")
+                    .message("Event with such name, start time and location name already exists")
                     .build();
         });
 
@@ -59,6 +61,29 @@ public class EventServiceImpl implements EventService {
         return eventMapper.mapToDto(savedEvent);
     }
 
+    @Transactional
+    @Override
+    public EventDto update(Long id, EventDto updatedEventDto) {
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        Event event = eventOptional
+                .orElseThrow(() -> CustomApiException.builder()
+                        .httpStatus(HttpStatus.NOT_FOUND)
+                        .message("Event not found")
+                        .build());
+
+        event.setName(updatedEventDto.getName());
+        event.setType(updatedEventDto.getType());
+        event.setStartTimestamp(updatedEventDto.getStartTimestamp());
+        event.setEndTimestamp(updatedEventDto.getEndTimestamp());
+        event.setLocationName(updatedEventDto.getLocationName());
+        event.setDescription(updatedEventDto.getDescription());
+
+        Event updated = eventRepository.save(event);
+
+        return eventMapper.mapToDto(updated);
+    }
+
+    @Transactional
     @Override
     public void deleteBydId(Long id) {
         if (!eventRepository.existsById(id)) {

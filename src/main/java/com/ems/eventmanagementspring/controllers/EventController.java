@@ -30,6 +30,11 @@ public class EventController {
         return eventService.save(addEventDto);
     }
 
+    @PutMapping("/{id}")
+    public EventDto update(@PathVariable Long id, @RequestBody EventDto updatedEventDto) {
+        return eventService.update(id, updatedEventDto);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         eventService.deleteBydId(id);

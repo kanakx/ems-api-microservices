@@ -42,9 +42,6 @@ public class Event {
     @Column(length = 250, nullable = false)
     private String description;
 
-//    @Column(nullable = false)
-//    private Boolean isPublic;
-
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AttendeeEvent> attendeeEventList = new ArrayList<>();
 
