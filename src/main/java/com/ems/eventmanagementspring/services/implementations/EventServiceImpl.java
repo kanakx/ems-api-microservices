@@ -59,4 +59,15 @@ public class EventServiceImpl implements EventService {
         return eventMapper.mapToDto(savedEvent);
     }
 
+    @Override
+    public void deleteBydId(Long id) {
+        if (!eventRepository.existsById(id)) {
+            throw CustomApiException.builder()
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .message("Event not found")
+                    .build();
+        }
+        eventRepository.deleteById(id);
+    }
+
 }

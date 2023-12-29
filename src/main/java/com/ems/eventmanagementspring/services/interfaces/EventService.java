@@ -12,5 +12,6 @@ public interface EventService {
     List<EventDto> findAll();
     EventDto findById(Long id);
     EventDto save(AddEventDto addEventDto);
+    void deleteBydId(Long id);
 
 }
