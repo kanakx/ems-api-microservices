@@ -46,12 +46,12 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventDto save(AddEventDto addEventDto) {
-        Optional<Event> eventOptional = eventRepository.findByNameAndStartTimestampAndLocationName(addEventDto.getName(), addEventDto.getStartTimestamp(), addEventDto.getLocationName());
+        Optional<Event> eventOptional = eventRepository.findByName(addEventDto.getName());
 
         eventOptional.ifPresent(event -> {
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
-                    .message("Event with such name, start time and location name already exists")
+                    .message("Event with such name already exists")
                     .build();
         });
 
@@ -70,6 +70,19 @@ public class EventServiceImpl implements EventService {
                         .httpStatus(HttpStatus.NOT_FOUND)
                         .message("Event not found")
                         .build());
+
+
+
+        List<Event> conflictingEvents = eventRepository.findAllByName(updatedEventDto.getName());
+        boolean isSimilarEventAlreadyPresent = conflictingEvents.stream()
+                .anyMatch(existingEvent -> !existingEvent.getIdEvent().equals(event.getIdEvent()));
+
+        if (isSimilarEventAlreadyPresent) {
+            throw CustomApiException.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .message("Event with such name already exists")
+                    .build();
+        }
 
         event.setName(updatedEventDto.getName());
         event.setType(updatedEventDto.getType());

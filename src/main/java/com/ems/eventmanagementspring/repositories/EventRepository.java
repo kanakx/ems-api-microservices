@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
     
-    Optional<Event> findByNameAndStartTimestampAndLocationName(String name, LocalDateTime startTimestamp, String locationName);
+    Optional<Event> findByName(String name);
+    List<Event> findAllByName(String name);
 
 }
