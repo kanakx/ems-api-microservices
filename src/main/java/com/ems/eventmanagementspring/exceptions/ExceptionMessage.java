@@ -2,6 +2,8 @@ package com.ems.eventmanagementspring.exceptions;
 
 public class ExceptionMessage {
 
+    private ExceptionMessage() {}
+
     public static String entityNotFound(String entityName) {
         return entityName + " not found";
     }
