@@ -3,7 +3,7 @@ package com.ems.eventmanagementspring.services.implementations;
 import com.ems.eventmanagementspring.entities.dtos.AttendeeDto;
 import com.ems.eventmanagementspring.entities.mappers.AttendeeMapper;
 import com.ems.eventmanagementspring.entities.models.Attendee;
-import com.ems.eventmanagementspring.exception.CustomApiException;
+import com.ems.eventmanagementspring.exceptions.CustomApiException;
 import com.ems.eventmanagementspring.repositories.AttendeeRepository;
 import com.ems.eventmanagementspring.services.interfaces.AttendeeService;
 import lombok.RequiredArgsConstructor;

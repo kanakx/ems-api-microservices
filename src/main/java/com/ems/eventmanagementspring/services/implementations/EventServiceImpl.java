@@ -4,7 +4,8 @@ import com.ems.eventmanagementspring.entities.dtos.AddEventDto;
 import com.ems.eventmanagementspring.entities.dtos.EventDto;
 import com.ems.eventmanagementspring.entities.mappers.EventMapper;
 import com.ems.eventmanagementspring.entities.models.Event;
-import com.ems.eventmanagementspring.exception.CustomApiException;
+import com.ems.eventmanagementspring.exceptions.CustomApiException;
+import com.ems.eventmanagementspring.exceptions.ExceptionMessage;
 import com.ems.eventmanagementspring.repositories.EventRepository;
 import com.ems.eventmanagementspring.services.interfaces.EventService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDto> findAll() {
         List<Event> eventList = eventRepository.findAll();
-
         return eventList.stream()
                 .map(eventMapper::mapToDto)
                 .toList();
@@ -34,10 +34,10 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventDto findById(Long id) {
         Optional<Event> eventOptional = eventRepository.findById(id);
-        Event event = eventOptional
-                .orElseThrow(() -> CustomApiException.builder()
+        Event event = eventOptional.orElseThrow(() ->
+                CustomApiException.builder()
                         .httpStatus(HttpStatus.NOT_FOUND)
-                        .message("Event not found")
+                        .message(ExceptionMessage.entityNotFound("Event"))
                         .build());
 
         return eventMapper.mapToDto(event);
@@ -46,41 +46,34 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventDto save(AddEventDto addEventDto) {
-        Optional<Event> eventOptional = eventRepository.findByName(addEventDto.getName());
-
-        eventOptional.ifPresent(event -> {
+        eventRepository.findByName(addEventDto.getName()).ifPresent(event -> {
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
-                    .message("Event with such name already exists")
+                    .message(ExceptionMessage.entityAlreadyExists("Event"))
                     .build();
         });
 
         Event newEvent = eventMapper.mapToEntity(addEventDto);
-        Event savedEvent = eventRepository.save(newEvent);
-
-        return eventMapper.mapToDto(savedEvent);
+        return eventMapper.mapToDto(eventRepository.save(newEvent));
     }
 
     @Transactional
     @Override
     public EventDto update(Long id, EventDto updatedEventDto) {
-        Optional<Event> eventOptional = eventRepository.findById(id);
-        Event event = eventOptional
+        Event event = eventRepository.findById(id)
                 .orElseThrow(() -> CustomApiException.builder()
                         .httpStatus(HttpStatus.NOT_FOUND)
-                        .message("Event not found")
+                        .message(ExceptionMessage.entityNotFound("Event"))
                         .build());
 
-
-
-        List<Event> conflictingEvents = eventRepository.findAllByName(updatedEventDto.getName());
-        boolean isSimilarEventAlreadyPresent = conflictingEvents.stream()
+        // Check if there is a conflicting event
+        boolean isConflictingEventPresent = eventRepository.findAllByName(updatedEventDto.getName()).stream()
                 .anyMatch(existingEvent -> !existingEvent.getIdEvent().equals(event.getIdEvent()));
 
-        if (isSimilarEventAlreadyPresent) {
+        if (isConflictingEventPresent) {
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
-                    .message("Event with such name already exists")
+                    .message(ExceptionMessage.entityAlreadyExists("Event"))
                     .build();
         }
 
@@ -91,18 +84,16 @@ public class EventServiceImpl implements EventService {
         event.setLocationName(updatedEventDto.getLocationName());
         event.setDescription(updatedEventDto.getDescription());
 
-        Event updated = eventRepository.save(event);
-
-        return eventMapper.mapToDto(updated);
+        return eventMapper.mapToDto(eventRepository.save(event));
     }
 
     @Transactional
     @Override
-    public void deleteBydId(Long id) {
+    public void deleteById(Long id) {
         if (!eventRepository.existsById(id)) {
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.NOT_FOUND)
-                    .message("Event not found")
+                    .message(ExceptionMessage.entityNotFound("Event"))
                     .build();
         }
         eventRepository.deleteById(id);

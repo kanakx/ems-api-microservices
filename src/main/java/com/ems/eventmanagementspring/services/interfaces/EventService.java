@@ -13,6 +13,6 @@ public interface EventService {
     EventDto findById(Long id);
     EventDto save(AddEventDto addEventDto);
     EventDto update(Long id, EventDto updatedEventDto);
-    void deleteBydId(Long id);
+    void deleteById(Long id);
 
 }

@@ -1,4 +1,4 @@
-package com.ems.eventmanagementspring.exception;
+package com.ems.eventmanagementspring.exceptions;
 
 import lombok.Builder;
 import lombok.Getter;
