@@ -27,6 +27,7 @@ logging:
         web: DEBUG
         security: DEBUG
         web.cors: DEBUG
+
 allowed-origins:
   http://localhost:5173,
   http://localhost:8080,
