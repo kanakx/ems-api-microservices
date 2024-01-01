@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+
+  mysql-db:
+    image: mysql:latest
+    container_name: docker-ems-postgres
+    environment:
+      MYSQL_DATABASE: ems-auth-db
+      MYSQL_ROOT_USER: ems-auth-root
+      MYSQL_ROOT_PASSWORD: ems-auth-root-pwd
+      MYSQL_USER: ems-auth-user
+      MYSQL_PASSWORD: ems-auth-user-pwd
+    ports:
+      - "5432:5432"
