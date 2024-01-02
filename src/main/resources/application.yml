@@ -8,7 +8,7 @@ spring:
     name: ems-auth-service-spring
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:mysql://${db.host}:${db.port}/${db.databaseName}
+    url: jdbc:postgresql://${db.host}:${db.port}/${db.databaseName}
     username: ems-auth-user
     password: ems-auth-user-pwd
   jpa:
@@ -23,6 +23,7 @@ spring:
 server:
   error:
     include-message: always
+  port: 8081
 
 logging:
   level:
