@@ -12,4 +12,20 @@ public class ExceptionMessage {
         return entityName + " with such details already exists";
     }
 
+    public static String invalidToken() {
+        return "Invalid JWT token";
+    }
+
+    public static String expiredToken() {
+        return "Expired JWT token";
+    }
+
+    public static String tokenParsingError() {
+        return "Error parsing JWT token";
+    }
+
+    public static String missingTokenClaims(String claim) {
+        return "Missing " + claim + " claims in JWT token";
+    }
+
 }
