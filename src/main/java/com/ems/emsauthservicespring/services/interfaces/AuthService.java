@@ -7,6 +7,6 @@ import com.ems.emsauthservicespring.entities.dtos.RegisterUserDto;
 public interface AuthService {
 
     AuthResponseDto register(RegisterUserDto registerUserDto);
-    AuthResponseDto login(LoginUserDto loginUserDto);
+    AuthResponseDto authenticate(LoginUserDto loginUserDto);
 
 }
