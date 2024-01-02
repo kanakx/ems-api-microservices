@@ -17,9 +17,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+
 server:
   error:
     include-message: always
+
 logging:
   level:
     org:
@@ -34,4 +36,4 @@ allowed-origins:
   http://localhost:4200
 
 jwt:
-  secret: '6653572f85a0378b9704f0f226ab09cf0f741918cc8371635baefb56ef0589f7'  # Your JWT secret key
+  secret: '6653572f85a0378b9704f0f226ab09cf0f741918cc8371635baefb56ef0589f7'
