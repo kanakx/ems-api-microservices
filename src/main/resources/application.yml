@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:mysql://${db.host}:${db.port}/${db.databaseName}
-    username: ems-data-user
-    password: ems-data-user-pwd
+    username: ems-auth-user
+    password: ems-auth-user-pwd
   jpa:
     hibernate:
       ddl-auto: create-drop

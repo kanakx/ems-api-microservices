@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
 
-  mysql-db:
-    image: mysql:latest
+  postgres-db:
+    image: postgres:alpine
     container_name: docker-ems-postgres
     environment:
       MYSQL_DATABASE: ems-auth-db
