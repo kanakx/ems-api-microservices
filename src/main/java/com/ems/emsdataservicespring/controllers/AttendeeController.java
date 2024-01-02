@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/attendees")
+@RequestMapping("/api/v1/data/attendees")
 @RequiredArgsConstructor
 public class AttendeeController {
 
