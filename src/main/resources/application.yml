@@ -4,6 +4,8 @@ db:
   databaseName: ems-auth-db
 
 spring:
+  application:
+    name: ems-auth-service-spring
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:mysql://${db.host}:${db.port}/${db.databaseName}
@@ -38,3 +40,8 @@ allowed-origins:
 
 jwt:
   secret: '6653572f85a0378b9704f0f226ab09cf0f741918cc8371635baefb56ef0589f7'
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
