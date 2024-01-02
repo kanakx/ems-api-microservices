@@ -13,10 +13,10 @@
     </parent>
 
     <groupId>com.ems</groupId>
-    <artifactId>event-management-spring</artifactId>
+    <artifactId>ems-data-service-spring</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>event-management-spring</name>
-    <description>event-management-spring</description>
+    <name>ems-data-service-spring</name>
+    <description>ems-data-service-spring</description>
 
     <properties>
         <java.version>21</java.version>
