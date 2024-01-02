@@ -1,14 +1,15 @@
 version: '3.8'
 
 services:
+
   mysql-db:
     image: mysql:latest
     container_name: docker-mysql
     environment:
-      MYSQL_DATABASE: ems-db
-      MYSQL_ROOT_USER: ems-root
-      MYSQL_ROOT_PASSWORD: ems-root-pwd
-      MYSQL_USER: ems-user
-      MYSQL_PASSWORD: ems-user-pwd
+      MYSQL_DATABASE: ems-data-db
+      MYSQL_ROOT_USER: ems-data-root
+      MYSQL_ROOT_PASSWORD: ems-data-root-pwd
+      MYSQL_USER: ems-data-user
+      MYSQL_PASSWORD: ems-data-user-pwd
     ports:
       - "3306:3306"

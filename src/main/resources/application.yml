@@ -1,14 +1,14 @@
 db:
   host: localhost
   port: 3306
-  databaseName: ems-db
+  databaseName: ems-data-db
 
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${db.host}:${db.port}/${db.databaseName}
-    username: ems-user
-    password: ems-user-pwd
+    username: ems-data-user
+    password: ems-data-user-pwd
   jpa:
     hibernate:
       ddl-auto: create-drop
