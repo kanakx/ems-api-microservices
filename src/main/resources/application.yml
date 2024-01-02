@@ -4,6 +4,8 @@ db:
   databaseName: ems-data-db
 
 spring:
+  application:
+    name: ems-data-service-spring
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${db.host}:${db.port}/${db.databaseName}
@@ -32,3 +34,8 @@ allowed-origins:
   http://localhost:5173,
   http://localhost:8080,
   http://localhost:4200
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

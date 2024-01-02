@@ -13,3 +13,4 @@ services:
       MYSQL_PASSWORD: ems-data-user-pwd
     ports:
       - "3306:3306"
+    restart: unless-stopped
