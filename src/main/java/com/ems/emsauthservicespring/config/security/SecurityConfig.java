@@ -1,4 +1,4 @@
-package com.ems.emsauthservicespring.config;
+package com.ems.emsauthservicespring.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,6 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final CustomUserDetailsService customUserDetailsService;
-//    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -37,15 +36,6 @@ public class SecurityConfig {
         return httpSecurity.build();
 
     }
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return username -> userRepository.findByUsername(username)
-//                .orElseThrow(() -> CustomApiException.builder()
-//                        .httpStatus(HttpStatus.NOT_FOUND)
-//                        .message("User not found")
-//                        .build());
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

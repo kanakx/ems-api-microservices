@@ -1,4 +1,4 @@
-package com.ems.emsauthservicespring.config;
+package com.ems.emsauthservicespring.config.security;
 
 import com.ems.emsauthservicespring.entities.models.User;
 import com.ems.emsauthservicespring.exceptions.CustomApiException;
