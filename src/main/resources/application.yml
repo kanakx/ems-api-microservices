@@ -30,6 +30,7 @@ logging:
         security: DEBUG
         web.cors: DEBUG
 
+# noinspection SpringBootApplicationYaml
 allowed-origins:
   http://localhost:5173,
   http://localhost:8080,
