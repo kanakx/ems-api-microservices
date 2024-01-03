@@ -36,9 +36,11 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             if (routeValidator.isSecured.test(exchange.getRequest())) {
-                String authHeader = extractAuthToken(exchange.getRequest());
+                String authToken = extractAuthToken(exchange.getRequest());
                 try {
-                    TokenDto tokenDto = new TokenDto(authHeader);
+                    TokenDto tokenDto = TokenDto.builder()
+                            .token(authToken)
+                            .build();
                     ResponseEntity<TokenValidationResponseDto> response = restTemplate.postForEntity(
                             "http://ems-auth-service-spring/api/v1/auth/validate",
                             tokenDto,

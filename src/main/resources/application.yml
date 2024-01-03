@@ -11,11 +11,15 @@ spring:
           uri: lb://ems-auth-service-spring
           predicates:
             - Path=/api/v1/auth/**
+          filters:
+            - AuthFilter
 
         - id: ems-data-service-spring
           uri: lb://ems-data-service-spring
           predicates:
             - Path=/api/v1/data/**
+          filters:
+            - AuthFilter
 
 logging:
   level:
