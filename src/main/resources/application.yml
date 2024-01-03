@@ -17,6 +17,11 @@ spring:
           predicates:
             - Path=/api/v1/data/**
 
+logging:
+  level:
+    org:
+      springframework: DEBUG
+
 eureka:
   client:
     serviceUrl:
