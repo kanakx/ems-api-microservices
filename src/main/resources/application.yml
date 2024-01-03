@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: ems-api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: ems-auth-service-spring
+          uri: lb://ems-auth-service-spring
+          predicates:
+            - Path=/api/v1/auth/**
+
+        - id: ems-data-service-spring
+          uri: lb://ems-data-service-spring
+          predicates:
+            - Path=/api/v1/data/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
