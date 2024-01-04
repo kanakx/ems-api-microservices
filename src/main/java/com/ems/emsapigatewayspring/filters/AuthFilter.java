@@ -2,16 +2,16 @@ package com.ems.emsapigatewayspring.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -24,35 +24,39 @@ import java.util.Map;
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
     private final RouteValidator routeValidator;
-    private final RestTemplate restTemplate;
+    private final WebClient webClient;
 
-    public AuthFilter(RouteValidator routeValidator, RestTemplate restTemplate) {
+    public AuthFilter(RouteValidator routeValidator, WebClient webClient) {
         super(Config.class);
         this.routeValidator = routeValidator;
-        this.restTemplate = restTemplate;
+        this.webClient = webClient;
+    }
+
+    private Mono<Void> authenticate(ServerWebExchange exchange, GatewayFilterChain chain) {
+        String authToken = extractAuthToken(exchange.getRequest());
+        TokenDto tokenDto = TokenDto.builder().token(authToken).build();
+
+        return webClient.post()
+                .uri("/api/v1/auth/validate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(tokenDto)
+                .retrieve()
+                .bodyToMono(TokenValidationResponseDto.class)
+                .flatMap(response -> {
+                    if (response.isValid()) {
+                        return chain.filter(exchange);  // Continue with the chain if valid
+                    } else {
+                        return handleUnauthenticated(exchange, "Invalid Token");  // Handle unauthenticated
+                    }
+                })
+                .onErrorResume(e -> handleUnauthenticated(exchange, "AuthService Error: " + e.getMessage()));  // Handle errors
     }
 
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             if (routeValidator.isSecured.test(exchange.getRequest())) {
-                String authToken = extractAuthToken(exchange.getRequest());
-                try {
-                    TokenDto tokenDto = TokenDto.builder()
-                            .token(authToken)
-                            .build();
-                    ResponseEntity<TokenValidationResponseDto> response = restTemplate.postForEntity(
-                            "http://ems-auth-service-spring/api/v1/auth/validate",
-                            tokenDto,
-                            TokenValidationResponseDto.class
-                    );
-
-                    if (!response.getBody().getIsValid()) {
-                        return handleUnauthenticated(exchange, "Invalid Token");
-                    }
-                } catch (Exception e) {
-                    return handleUnauthenticated(exchange, "AuthService Error: " + e.getMessage());
-                }
+                return authenticate(exchange, chain);
             }
             return chain.filter(exchange);
         };

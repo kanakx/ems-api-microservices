@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TokenValidationResponseDto {
 
-    private Boolean isValid;
+    private boolean isValid;
     private String token;
 
 }

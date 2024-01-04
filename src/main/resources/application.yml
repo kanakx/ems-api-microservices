@@ -1,21 +1,22 @@
 spring:
   application:
-    name: ems-api-gateway
+    name: ems-api-gateway-spring
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
+          lower-case-service-id: false
       routes:
-        - id: ems-auth-service-spring
-          uri: lb://ems-auth-service-spring
+        - id: EMS-AUTH-SERVICE-SPRING
+          uri: lb://EMS-AUTH-SERVICE-SPRING
           predicates:
             - Path=/api/v1/auth/**
-          filters:
-            - AuthFilter
+#          filters:
+#            - AuthFilter
 
-        - id: ems-data-service-spring
-          uri: lb://ems-data-service-spring
+        - id: EMS-DATA-SERVICE-SPRING
+          uri: lb://EMS-DATA-SERVICE-SPRING
           predicates:
             - Path=/api/v1/data/**
           filters:
@@ -30,3 +31,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+#    prefer-ip-address: true
+    hostname: localhost
