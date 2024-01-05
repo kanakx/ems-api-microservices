@@ -1,17 +1,18 @@
 package com.ems.emsauthservicespring.services.implementations;
 
 import com.ems.emsauthservicespring.config.security.JwtService;
-import com.ems.emsauthservicespring.entities.dtos.TokenDto;
-import com.ems.emsauthservicespring.entities.dtos.LoginUserDto;
-import com.ems.emsauthservicespring.entities.dtos.RegisterUserDto;
-import com.ems.emsauthservicespring.entities.dtos.TokenValidationResponseDto;
+import com.ems.emsauthservicespring.entities.dtos.*;
 import com.ems.emsauthservicespring.entities.enums.UserRole;
+import com.ems.emsauthservicespring.entities.mappers.UserMapper;
 import com.ems.emsauthservicespring.entities.models.User;
 import com.ems.emsauthservicespring.exceptions.CustomApiException;
 import com.ems.emsauthservicespring.exceptions.ExceptionMessage;
 import com.ems.emsauthservicespring.repositories.UserRepository;
 import com.ems.emsauthservicespring.services.interfaces.AuthService;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,9 +28,10 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Override
-    public TokenDto register(RegisterUserDto registerUserDto) {
+    public UserDto register(RegisterUserDto registerUserDto) {
         userRepository.findByEmail(registerUserDto.getEmail()).ifPresent(user -> {
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
@@ -44,12 +46,9 @@ public class AuthServiceImpl implements AuthService {
                 .userRole(UserRole.USER)
                 .build();
 
-        userRepository.save(user);
+        User saved = userRepository.save(user);
 
-        String token = jwtService.generateToken(user);
-        return TokenDto.builder()
-                .token(token)
-                .build();
+        return userMapper.mapToDto(saved);
     }
 
     @Override
@@ -75,11 +74,31 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenValidationResponseDto validateToken(TokenDto tokenDto) {
-        boolean isValid = jwtService.validateToken(tokenDto.getToken());
-        return TokenValidationResponseDto.builder()
-                .isValid(isValid)
-                .token(tokenDto.getToken())
-                .build();
+        try {
+            jwtService.validateToken(tokenDto.getToken());
+            return TokenValidationResponseDto.builder()
+                    .isValid(true)
+                    .token(tokenDto.getToken())
+                    .build();
+        } catch (ExpiredJwtException e) {
+            // Specific handling for expired token
+            throw CustomApiException.builder()
+                    .httpStatus(HttpStatus.UNAUTHORIZED)
+                    .message("Token expired")
+                    .build();
+        } catch (MalformedJwtException e) {
+            // Specific handling for malformed token
+            throw CustomApiException.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .message("Invalid token format")
+                    .build();
+        } catch (JwtException e) {
+            // General JWT exception
+            throw CustomApiException.builder()
+                    .httpStatus(HttpStatus.UNAUTHORIZED)
+                    .message("Invalid token")
+                    .build();
+        }
     }
 
 }
