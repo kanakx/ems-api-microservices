@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -43,13 +44,19 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 .retrieve()
                 .bodyToMono(TokenValidationResponseDto.class)
                 .flatMap(response -> {
-                    if (response.getIsValid() != null && response.getIsValid()) {
+                    if (Boolean.TRUE.equals(response.getIsValid())) {
                         return chain.filter(exchange);
                     } else {
                         return handleUnauthenticated(exchange, "Invalid Token");
                     }
                 })
-                .onErrorResume(e -> handleUnauthenticated(exchange, "AuthService Error: " + e.getMessage()));
+                .onErrorResume(e -> {
+                    if (e instanceof WebClientResponseException webClientResponseException) {
+                        return handleUnauthenticated(exchange, webClientResponseException.getResponseBodyAsString());
+                    } else {
+                        return handleUnauthenticated(exchange, "AuthService Error: " + e.getMessage());
+                    }
+                });
     }
 
     @Override
