@@ -27,12 +27,10 @@ import java.util.List;
 @Component
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
-    private final RouteValidator routeValidator;
     private final WebClient webClient;
 
-    public AuthFilter(RouteValidator routeValidator, WebClient.Builder webClientBuilder) {
+    public AuthFilter(WebClient.Builder webClientBuilder) {
         super(Config.class);
-        this.routeValidator = routeValidator;
         this.webClient = webClientBuilder.build();
     }
 
@@ -65,7 +63,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
-            if (routeValidator.isSecured.test(exchange.getRequest())) {
+            if (RouteValidator.isSecured.test(exchange.getRequest())) {
                 return authenticate(exchange, chain);
             }
             return chain.filter(exchange);
