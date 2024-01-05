@@ -26,11 +26,12 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     private final RouteValidator routeValidator;
     private final WebClient webClient;
 
-    public AuthFilter(RouteValidator routeValidator, WebClient webClient) {
+    public AuthFilter(RouteValidator routeValidator, WebClient.Builder webClientBuilder) {
         super(Config.class);
         this.routeValidator = routeValidator;
-        this.webClient = webClient;
+        this.webClient = webClientBuilder.build();  // Use the load-balanced builder
     }
+
 
     private Mono<Void> authenticate(ServerWebExchange exchange, GatewayFilterChain chain) {
         String authToken = extractAuthToken(exchange.getRequest());
