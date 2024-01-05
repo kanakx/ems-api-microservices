@@ -29,9 +29,8 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     public AuthFilter(RouteValidator routeValidator, WebClient.Builder webClientBuilder) {
         super(Config.class);
         this.routeValidator = routeValidator;
-        this.webClient = webClientBuilder.build();  // Use the load-balanced builder
+        this.webClient = webClientBuilder.build();
     }
-
 
     private Mono<Void> authenticate(ServerWebExchange exchange, GatewayFilterChain chain) {
         String authToken = extractAuthToken(exchange.getRequest());
@@ -43,15 +42,14 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 .bodyValue(tokenDto)
                 .retrieve()
                 .bodyToMono(TokenValidationResponseDto.class)
-                .doOnError(error -> System.out.println("HELLOL " + error))
                 .flatMap(response -> {
-                    if (response.getIsValid()) {
-                        return chain.filter(exchange);  // Continue with the chain if valid
+                    if (response.getIsValid() != null && response.getIsValid()) {
+                        return chain.filter(exchange);
                     } else {
-                        return handleUnauthenticated(exchange, "Invalid Token");  // Handle unauthenticated
+                        return handleUnauthenticated(exchange, "Invalid Token");
                     }
                 })
-                .onErrorResume(e -> handleUnauthenticated(exchange, "AuthService Error: " + e.getMessage()));  // Handle errors
+                .onErrorResume(e -> handleUnauthenticated(exchange, "AuthService Error: " + e.getMessage()));
     }
 
     @Override

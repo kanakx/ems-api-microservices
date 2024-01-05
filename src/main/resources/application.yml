@@ -1,3 +1,8 @@
+server:
+  error:
+    include-message: always
+  port: 8080
+
 spring:
   application:
     name: EMS-API-GATEWAY-SPRING
@@ -12,8 +17,8 @@ spring:
           uri: lb://EMS-AUTH-SERVICE-SPRING
           predicates:
             - Path=/api/v1/auth/**
-#          filters:
-#            - AuthFilter
+          filters:
+            - AuthFilter
 
         - id: EMS-DATA-SERVICE-SPRING
           uri: lb://EMS-DATA-SERVICE-SPRING
@@ -22,20 +27,7 @@ spring:
           filters:
             - AuthFilter
 
-server:
-  error:
-    include-message: always
-  port: 8080
-
-logging:
-  level:
-    org:
-      springframework: DEBUG
-
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
-  instance:
-#    prefer-ip-address: true
-#    hostname: localhost
