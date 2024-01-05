@@ -5,7 +5,7 @@ db:
 
 spring:
   application:
-    name: ems-data-service-spring
+    name: EMS-DATA-SERVICE-SPRING
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${db.host}:${db.port}/${db.databaseName}
@@ -43,3 +43,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+#    prefer-ip-address: true
+#    hostname: localhost
