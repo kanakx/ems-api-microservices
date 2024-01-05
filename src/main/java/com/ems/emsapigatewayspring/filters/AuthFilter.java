@@ -37,13 +37,14 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         TokenDto tokenDto = TokenDto.builder().token(authToken).build();
 
         return webClient.post()
-                .uri("/api/v1/auth/validate")
+                .uri("lb://EMS-AUTH-SERVICE-SPRING/api/v1/auth/validate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(tokenDto)
                 .retrieve()
                 .bodyToMono(TokenValidationResponseDto.class)
+                .doOnError(error -> System.out.println("HELLOL " + error))
                 .flatMap(response -> {
-                    if (response.isValid()) {
+                    if (response.getIsValid()) {
                         return chain.filter(exchange);  // Continue with the chain if valid
                     } else {
                         return handleUnauthenticated(exchange, "Invalid Token");  // Handle unauthenticated

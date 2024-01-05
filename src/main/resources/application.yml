@@ -1,12 +1,12 @@
 spring:
   application:
-    name: ems-api-gateway-spring
+    name: EMS-API-GATEWAY-SPRING
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
-          lower-case-service-id: false
+          lower-case-service-id: true
       routes:
         - id: EMS-AUTH-SERVICE-SPRING
           uri: lb://EMS-AUTH-SERVICE-SPRING
@@ -22,6 +22,11 @@ spring:
           filters:
             - AuthFilter
 
+server:
+  error:
+    include-message: always
+  port: 8080
+
 logging:
   level:
     org:
@@ -33,4 +38,4 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
   instance:
 #    prefer-ip-address: true
-    hostname: localhost
+#    hostname: localhost
