@@ -1,6 +1,9 @@
 package com.ems.emsapigatewayspring.filters;
 
+import com.ems.emsapigatewayspring.exceptions.ExceptionContent;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.NoArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -17,9 +20,9 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
@@ -82,24 +85,38 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid auth header!");
     }
 
-    private Mono<Void> handleUnauthenticated(ServerWebExchange exchange, String message) {
+    private Mono<Void> handleUnauthenticated(ServerWebExchange exchange, String jsonMessage) {
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 
-        // Prepare a JSON response
+        String errorMessage;
+        try {
+            JsonNode jsonNode = new ObjectMapper().readTree(jsonMessage);
+            errorMessage = jsonNode.has("message") ? jsonNode.get("message").asText() : jsonMessage;
+        } catch (IOException e) {
+            errorMessage = jsonMessage;
+        }
+
+        ExceptionContent exceptionContent = ExceptionContent.builder()
+                .httpStatus(HttpStatus.UNAUTHORIZED)
+                .message(errorMessage)
+                .build();
+
         ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
         String body;
         try {
-            body = mapper.writeValueAsString(Map.of("error", message));
+            body = mapper.writeValueAsString(exceptionContent);
         } catch (Exception e) {
             body = "{\"error\":\"Error processing the error message\"}";
         }
 
-        // Write the response
         byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);
 
         return exchange.getResponse().writeWith(Mono.just(buffer));
     }
+
 
     @NoArgsConstructor
     public static class Config {
