@@ -9,6 +9,8 @@ import java.util.function.Predicate;
 @Component
 public class RouteValidator {
 
+    private RouteValidator() {}
+
     public static final List<String> endpoints = List.of(
             "/api/v1/auth/register",
             "/api/v1/auth/login",
@@ -16,7 +18,7 @@ public class RouteValidator {
             "/eureka"
     );
 
-    public Predicate<ServerHttpRequest> isSecured =
+    public static final Predicate<ServerHttpRequest> isSecured =
             serverHttpRequest -> endpoints
                     .stream()
                     .noneMatch(uri -> serverHttpRequest
