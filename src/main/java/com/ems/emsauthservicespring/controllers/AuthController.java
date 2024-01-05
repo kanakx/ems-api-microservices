@@ -1,8 +1,9 @@
 package com.ems.emsauthservicespring.controllers;
 
-import com.ems.emsauthservicespring.entities.dtos.AuthResponseDto;
+import com.ems.emsauthservicespring.entities.dtos.TokenDto;
 import com.ems.emsauthservicespring.entities.dtos.LoginUserDto;
 import com.ems.emsauthservicespring.entities.dtos.RegisterUserDto;
+import com.ems.emsauthservicespring.entities.dtos.TokenValidationResponseDto;
 import com.ems.emsauthservicespring.services.interfaces.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,13 +19,18 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public AuthResponseDto register(@RequestBody RegisterUserDto registerUserDto) {
+    public TokenDto register(@RequestBody RegisterUserDto registerUserDto) {
         return authService.register(registerUserDto);
     }
 
     @PostMapping("/login")
-    public AuthResponseDto login(@RequestBody LoginUserDto loginUserDto) {
-        return authService.authenticate(loginUserDto);
+    public TokenDto login(@RequestBody LoginUserDto loginUserDto) {
+        return authService.login(loginUserDto);
+    }
+
+    @PostMapping("/validate")
+    public TokenValidationResponseDto validateToken(@RequestBody TokenDto tokenDto) {
+        return authService.validateToken(tokenDto);
     }
 
 }

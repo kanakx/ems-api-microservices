@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    //TODO maybe move this class to services package
     private final CustomUserDetailsService customUserDetailsService;
 
     @Bean

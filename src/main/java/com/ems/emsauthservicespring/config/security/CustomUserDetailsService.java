@@ -27,7 +27,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> CustomApiException.builder()
                         .httpStatus(HttpStatus.NOT_FOUND)
                         .message(ExceptionMessage.entityNotFound("User"))
-                        .build());
+                        .build()
+                );
     }
 
 }

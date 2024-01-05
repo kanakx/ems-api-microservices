@@ -5,7 +5,7 @@ db:
 
 spring:
   application:
-    name: ems-auth-service-spring
+    name: EMS-AUTH-SERVICE-SPRING
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${db.host}:${db.port}/${db.databaseName}
@@ -46,3 +46,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+#    prefer-ip-address: true
+#    hostname: localhost
