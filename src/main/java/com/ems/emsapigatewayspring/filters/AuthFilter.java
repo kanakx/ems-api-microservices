@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -27,6 +29,7 @@ import java.util.List;
 @Component
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthFilter.class);
     private final WebClient webClient;
 
     public AuthFilter(WebClient.Builder webClientBuilder) {
@@ -35,6 +38,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     }
 
     private Mono<Void> authenticate(ServerWebExchange exchange, GatewayFilterChain chain) {
+        logger.info("Authenticating request: {}", exchange.getRequest().getPath());
         String authToken = extractAuthToken(exchange.getRequest());
         TokenDto tokenDto = TokenDto.builder().token(authToken).build();
 
@@ -46,12 +50,15 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 .bodyToMono(TokenValidationResponseDto.class)
                 .flatMap(response -> {
                     if (Boolean.TRUE.equals(response.getIsValid())) {
+                        logger.info("Token validated successfully for request: {}", exchange.getRequest().getPath());
                         return chain.filter(exchange);
                     } else {
+                        logger.warn("Invalid token for request: {}", exchange.getRequest().getPath());
                         return handleUnauthenticated(exchange, "Invalid Token");
                     }
                 })
                 .onErrorResume(e -> {
+                    logger.error("Error during authentication: {}", e.getMessage(), e);
                     if (e instanceof WebClientResponseException webClientResponseException) {
                         return handleUnauthenticated(exchange, webClientResponseException.getResponseBodyAsString());
                     } else {
@@ -66,6 +73,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             if (RouteValidator.isSecured.test(exchange.getRequest())) {
                 return authenticate(exchange, chain);
             }
+            logger.info("Bypassing auth for unsecured route: {}", exchange.getRequest().getPath());
             return chain.filter(exchange);
         };
     }
@@ -73,6 +81,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     private String extractAuthToken(ServerHttpRequest request) {
         List<String> headers = request.getHeaders().get(HttpHeaders.AUTHORIZATION);
         if (headers == null || headers.isEmpty()) {
+            logger.warn("No auth header in request: {}", request.getPath());
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No auth header!");
         }
 
@@ -80,10 +89,12 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
         if (authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7);
         }
+        logger.warn("Invalid auth header in request: {}", request.getPath());
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid auth header!");
     }
 
     private Mono<Void> handleUnauthenticated(ServerWebExchange exchange, String jsonMessage) {
+        logger.warn("Handling unauthenticated request: {}", exchange.getRequest().getPath());
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 
         String errorMessage;
