@@ -1,8 +1,7 @@
 # EMS API Gateway
 
 ## Overview 
-This project is an implementation of widely known API Gateway pattern.   
-It is intended to provide efficient handling of requests, secure authentication, and smooth integration with microservices architecture. In this case, I decided to utilize Spring Cloud Gateway due to its seamless integration with Spring ecosystem and ease of use.  
+This project is an implementation of widely known API Gateway pattern. It is intended to provide efficient handling of requests, secure authentication, and smooth integration with microservices architecture. In this case, I decided to utilize Spring Cloud Gateway due to its seamless integration with Spring ecosystem and ease of use.  
 
 ## Key Features
 - **Filters:** Implements custom filters for request validation and authentication, ensuring secure access to the EMS system.
