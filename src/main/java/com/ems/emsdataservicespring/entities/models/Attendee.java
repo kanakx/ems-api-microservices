@@ -24,10 +24,6 @@ public class Attendee {
     @Column(length = 100, nullable = false)
     private String fullName;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(length = 100, nullable = false)
-//    private AttendeeRole attendeeRole;
-
     @OneToMany(mappedBy = "attendee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AttendeeEvent> attendeeEventList = new ArrayList<>();
 

@@ -14,7 +14,6 @@ import org.mapstruct.Mapping;
 )
 public interface AttendeeEventMapper {
 
-//    @Mapping(target = "attendee", ignore = true)
     @Mapping(source = "event", target = "eventDto")
     AttendeeEventDto mapToDto(AttendeeEvent attendeeEvent);
 

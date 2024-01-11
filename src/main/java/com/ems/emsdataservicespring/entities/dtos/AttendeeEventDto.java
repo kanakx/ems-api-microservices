@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class AttendeeEventDto {
 
     private Long idAttendeeEvent;
-//    private AttendeeDto attendee;
     private EventDto eventDto;
     private MemberEventStatus status;
 
