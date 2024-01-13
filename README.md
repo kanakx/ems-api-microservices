@@ -18,3 +18,4 @@ services for data management.
   appropriate services.
 - [AuthService](https://github.com/kanakx/ems-auth-service-spring) - Handles user authentication and authorization
   through JWT tokens
+- [React Frontend Layer](https://github.com/kanakx/event-management-react) - The interactive user interface for event browsing, registration, and administration.
