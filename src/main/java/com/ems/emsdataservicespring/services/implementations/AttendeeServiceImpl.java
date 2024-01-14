@@ -30,6 +30,7 @@ public class AttendeeServiceImpl implements AttendeeService {
         Optional<Attendee> attendeeOptional = attendeeRepository.findById(id);
         Attendee attendee = attendeeOptional.orElseThrow(() -> {
             logger.warn("Attendee not found for ID: {}", id);
+
             return CustomApiException.builder()
                     .httpStatus(HttpStatus.NOT_FOUND)
                     .message(ExceptionMessage.entityNotFound(ENTITY_NAME))

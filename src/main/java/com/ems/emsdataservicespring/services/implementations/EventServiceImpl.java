@@ -32,6 +32,7 @@ public class EventServiceImpl implements EventService {
         logger.info("Processing request to find all events");
         List<Event> eventList = eventRepository.findAll();
         logger.info("Request to find events processed successfully with {} events found", eventList.size());
+
         return eventList.stream()
                 .map(eventMapper::mapToDto)
                 .toList();
@@ -43,6 +44,7 @@ public class EventServiceImpl implements EventService {
         Optional<Event> eventOptional = eventRepository.findById(id);
         Event event = eventOptional.orElseThrow(() -> {
             logger.warn("Attempted to find a non-existing event with ID {}", id);
+
             return CustomApiException.builder()
                     .httpStatus(HttpStatus.NOT_FOUND)
                     .message(ExceptionMessage.entityNotFound(ENTITY_NAME))
@@ -61,6 +63,7 @@ public class EventServiceImpl implements EventService {
         eventRepository.findByName(addEventDto.getName()).ifPresent(event -> {
             logger.warn("Event with name '{}' already exists", addEventDto.getName());
             logger.warn("Attempted to save an already existing event with name '{}'", addEventDto.getName());
+
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
                     .message(ExceptionMessage.entityAlreadyExists(ENTITY_NAME))
@@ -81,6 +84,7 @@ public class EventServiceImpl implements EventService {
         logger.info("Processing request to update a new event with ID: {}", id);
         Event eventToUpdate = eventRepository.findById(id).orElseThrow(() -> {
             logger.warn("Attempted to update a non-existent event with ID {}", id);
+
             return CustomApiException.builder()
                     .httpStatus(HttpStatus.NOT_FOUND)
                     .message(ExceptionMessage.entityNotFound(ENTITY_NAME))
@@ -115,6 +119,7 @@ public class EventServiceImpl implements EventService {
         logger.info("Processing request to delete event with ID: {}", id);
         if (!eventRepository.existsById(id)) {
             logger.warn("Attempted to delete a non-existent event with ID: {}", id);
+
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.NOT_FOUND)
                     .message(ExceptionMessage.entityNotFound(ENTITY_NAME))
