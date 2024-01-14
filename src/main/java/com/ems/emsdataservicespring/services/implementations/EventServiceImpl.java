@@ -72,14 +72,14 @@ public class EventServiceImpl implements EventService {
 
         logger.info("Request to save event '{}' with ID {} processed successfully", savedEvent.getName(), savedEvent.getIdEvent());
 
-        return eventMapper.mapToDto(eventRepository.save(newEvent));
+        return eventMapper.mapToDto(savedEvent);
     }
 
     @Transactional
     @Override
     public EventDto update(Long id, EventDto updatedEventDto) {
         logger.info("Processing request to update a new event with ID: {}", id);
-        Event event = eventRepository.findById(id).orElseThrow(() -> {
+        Event eventToUpdate = eventRepository.findById(id).orElseThrow(() -> {
             logger.warn("Attempted to update a non-existent event with ID {}", id);
             return CustomApiException.builder()
                     .httpStatus(HttpStatus.NOT_FOUND)
@@ -87,25 +87,22 @@ public class EventServiceImpl implements EventService {
                     .build();
         });
 
-        boolean isConflictingEventPresent = eventRepository.findAllByName(updatedEventDto.getName()).stream()
-                .anyMatch(existingEvent -> !existingEvent.getIdEvent().equals(event.getIdEvent()));
-
-        if (isConflictingEventPresent) {
+        eventRepository.findByName(updatedEventDto.getName()).ifPresent(event -> {
             logger.warn("Attempted to update an event with ID {} with name that already exists: {}", id, updatedEventDto.getName());
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
                     .message(ExceptionMessage.entityAlreadyExists(ENTITY_NAME))
                     .build();
-        }
+        });
 
-        event.setName(updatedEventDto.getName());
-        event.setType(updatedEventDto.getType());
-        event.setStartTimestamp(updatedEventDto.getStartTimestamp());
-        event.setEndTimestamp(updatedEventDto.getEndTimestamp());
-        event.setLocationName(updatedEventDto.getLocationName());
-        event.setDescription(updatedEventDto.getDescription());
+        eventToUpdate.setName(updatedEventDto.getName());
+        eventToUpdate.setType(updatedEventDto.getType());
+        eventToUpdate.setStartTimestamp(updatedEventDto.getStartTimestamp());
+        eventToUpdate.setEndTimestamp(updatedEventDto.getEndTimestamp());
+        eventToUpdate.setLocationName(updatedEventDto.getLocationName());
+        eventToUpdate.setDescription(updatedEventDto.getDescription());
 
-        Event updatedEvent = eventRepository.save(event);
+        Event updatedEvent = eventRepository.save(eventToUpdate);
 
         logger.info("Request to update event with ID {} processed successfully", updatedEvent.getIdEvent());
 
@@ -123,6 +120,7 @@ public class EventServiceImpl implements EventService {
                     .message(ExceptionMessage.entityNotFound(ENTITY_NAME))
                     .build();
         }
+
         eventRepository.deleteById(id);
 
         logger.info("Request to delete event with ID {} processed successfully", id);
