@@ -5,6 +5,7 @@ import com.ems.emsdataservicespring.entities.mappers.AttendeeMapper;
 import com.ems.emsdataservicespring.entities.models.Attendee;
 import com.ems.emsdataservicespring.exceptions.CustomApiException;
 import com.ems.emsdataservicespring.repositories.AttendeeRepository;
+import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,17 +29,15 @@ class AttendeeServiceImplTest {
     @InjectMocks
     AttendeeServiceImpl attendeeService;
 
+    private final EasyRandom easyRandom = new EasyRandom();
+
     @Test
     void findById_Success() {
         // Given
-        Long id = 1L;
-        Attendee attendee = Attendee.builder()
-                .fullName("test")
-                .build();
+        Long id = easyRandom.nextLong();
+        Attendee attendee = easyRandom.nextObject(Attendee.class);
 
-        AttendeeDto attendeeDto = AttendeeDto.builder()
-                .fullName("test")
-                .build();
+        AttendeeDto attendeeDto = easyRandom.nextObject(AttendeeDto.class);
 
         when(attendeeRepository.findById(id)).thenReturn(Optional.of(attendee));
         when(attendeeMapper.mapToDto(attendee)).thenReturn(attendeeDto);
@@ -47,7 +46,7 @@ class AttendeeServiceImplTest {
         AttendeeDto serviceResult = attendeeService.findById(id);
 
         // Then
-        assertNotNull(serviceResult);
+        assertEquals(attendeeDto, serviceResult);
         verify(attendeeRepository, times(1)).findById(id);
         verify(attendeeMapper, times(1)).mapToDto(attendee);
     }
@@ -55,7 +54,7 @@ class AttendeeServiceImplTest {
     @Test
     void findById_Failure_AttendeeNotFound() {
         // Given
-        Long id = 1L;
+        Long id = easyRandom.nextLong();
         when(attendeeRepository.findById(id)).thenReturn(Optional.empty());
 
         // When
