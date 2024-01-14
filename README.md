@@ -16,3 +16,4 @@ authorization. It utilizes JWT tokens to ensure secure and efficient user manage
 - [API Gateway](https://github.com/kanakx/ems-api-gateway-spring) - Serves as the entry point, routing requests to
   appropriate services.
 - [DataService](https://github.com/kanakx/ems-data-service-spring) - Manages the business data layer
+- [React Frontend Layer](https://github.com/kanakx/event-management-react) - The interactive user interface for event browsing, registration, and administration.
