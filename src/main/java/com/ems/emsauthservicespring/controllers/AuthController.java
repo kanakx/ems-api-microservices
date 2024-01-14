@@ -20,26 +20,25 @@ public class AuthController {
 
     @PostMapping("/register")
     public UserDto register(@RequestBody RegisterUserDto registerUserDto) {
-        logger.info("Registering attempt for a new user with email: {}", registerUserDto.getEmail());
-        UserDto userDto = authService.register(registerUserDto);
-        logger.info("Registration successful for email: {}", userDto.getEmail());
-        return userDto;
+        logger.info("Received registration request for email: {}", registerUserDto.getEmail());
+        UserDto registeredUser = authService.register(registerUserDto);
+        logger.info("Registration request completed for email: {}", registeredUser.getEmail());
+        return registeredUser;
     }
 
     @PostMapping("/login")
     public TokenDto login(@RequestBody LoginUserDto loginUserDto) {
-        logger.info("Login attempt for email: {}", loginUserDto.getEmail());
-        TokenDto tokenDto = authService.login(loginUserDto);
-        logger.info("Login successful for email: {}", loginUserDto.getEmail());
-        return tokenDto;
+        logger.info("Received login request for email: {}", loginUserDto.getEmail());
+        TokenDto token = authService.login(loginUserDto);
+        logger.info("Login request completed for email: {}", loginUserDto.getEmail());
+        return token;
     }
 
     @PostMapping("/validate")
     public TokenValidationResponseDto validateToken(@RequestBody TokenDto tokenDto) {
-        logger.debug("Validating token");
+        logger.debug("Received token validation request");
         TokenValidationResponseDto validationResponse = authService.validateToken(tokenDto);
-        logger.debug("Token validation status: {}", validationResponse.getIsValid());
+        logger.debug("Token validation request completed");
         return validationResponse;
     }
-
 }

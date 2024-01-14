@@ -34,9 +34,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserDto register(RegisterUserDto registerUserDto) {
-        logger.debug("Attempting to register user with email: {}", registerUserDto.getEmail());
+        logger.info("Processing registration for email: {}", registerUserDto.getEmail());
         userRepository.findByEmail(registerUserDto.getEmail()).ifPresent(user -> {
-            logger.warn("Registration attempt with existing email: {}", registerUserDto.getEmail());
+            logger.warn("Registration attempt with already existing email: {}", registerUserDto.getEmail());
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
                     .message(ExceptionMessage.entityAlreadyExists("User"))
@@ -51,14 +51,14 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         User saved = userRepository.save(user);
-        logger.info("User registered successfully with email: {}", saved.getEmail());
+        logger.info("User registration processed successfully with email: {}", saved.getEmail());
 
         return userMapper.mapToDto(saved);
     }
 
     @Override
     public TokenDto login(LoginUserDto loginUserDto) {
-        logger.debug("Attempting login for email: {}", loginUserDto.getEmail());
+        logger.info("Processing login for email: {}", loginUserDto.getEmail());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginUserDto.getEmail(), loginUserDto.getPassword())
         );
@@ -73,7 +73,7 @@ public class AuthServiceImpl implements AuthService {
                 });
 
         String token = jwtService.generateToken(user);
-        logger.info("Login successful for email: {}", loginUserDto.getEmail());
+        logger.info("User login processed successfully for email: {}", loginUserDto.getEmail());
 
         return TokenDto.builder()
                 .token(token)
@@ -82,10 +82,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenValidationResponseDto validateToken(TokenDto tokenDto) {
-        logger.debug("Validating token");
+        logger.info("Processing token validation");
         try {
             jwtService.validateToken(tokenDto.getToken());
-            logger.debug("Token validation successful");
+            logger.info("Token validation processed successfully");
             return TokenValidationResponseDto.builder()
                     .isValid(true)
                     .token(tokenDto.getToken())
