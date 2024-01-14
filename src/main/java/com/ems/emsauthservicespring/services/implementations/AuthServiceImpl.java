@@ -34,7 +34,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserDto register(RegisterUserDto registerUserDto) {
-        logger.info("Processing registration for email: {}", registerUserDto.getEmail());
+        logger.info("Processing request to register user with email: {}", registerUserDto.getEmail());
         userRepository.findByEmail(registerUserDto.getEmail()).ifPresent(user -> {
             logger.warn("Registration attempt with already existing email: {}", registerUserDto.getEmail());
             throw CustomApiException.builder()
@@ -51,14 +51,14 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         User saved = userRepository.save(user);
-        logger.info("User registration processed successfully with email: {}", saved.getEmail());
+        logger.info("Request to register user with email: {} processed successfully", saved.getEmail());
 
         return userMapper.mapToDto(saved);
     }
 
     @Override
     public TokenDto login(LoginUserDto loginUserDto) {
-        logger.info("Processing login for email: {}", loginUserDto.getEmail());
+        logger.info("Processing request to login user with email: {}", loginUserDto.getEmail());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginUserDto.getEmail(), loginUserDto.getPassword())
         );
@@ -73,7 +73,7 @@ public class AuthServiceImpl implements AuthService {
                 });
 
         String token = jwtService.generateToken(user);
-        logger.info("User login processed successfully for email: {}", loginUserDto.getEmail());
+        logger.info("Request to login user with email: {} processed successfully", loginUserDto.getEmail());
 
         return TokenDto.builder()
                 .token(token)
@@ -82,10 +82,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenValidationResponseDto validateToken(TokenDto tokenDto) {
-        logger.info("Processing token validation");
+        logger.info("Processing request to validate token");
         try {
             jwtService.validateToken(tokenDto.getToken());
-            logger.info("Token validation processed successfully");
+            logger.info("Request to validate token processed successfully");
             return TokenValidationResponseDto.builder()
                     .isValid(true)
                     .token(tokenDto.getToken())
