@@ -59,6 +59,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Easy Random Core for Generating Test Data -->
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-random-core</artifactId>
+            <version>5.0.0</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Spring Boot Starter for Web Applications -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
