@@ -9,6 +9,8 @@ import com.ems.emsdataservicespring.exceptions.ExceptionMessage;
 import com.ems.emsdataservicespring.repositories.EventRepository;
 import com.ems.emsdataservicespring.services.interfaces.EventService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,12 +22,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
+    private static final Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
     private final EventMapper eventMapper;
     private final EventRepository eventRepository;
+    private static final String ENTITY_NAME = "Event";
 
     @Override
     public List<EventDto> findAll() {
+        logger.info("Processing request to find all events");
         List<Event> eventList = eventRepository.findAll();
+        logger.info("Request to find events processed successfully with {} events found", eventList.size());
         return eventList.stream()
                 .map(eventMapper::mapToDto)
                 .toList();
@@ -33,12 +39,17 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDto findById(Long id) {
+        logger.info("Processing request to find event by ID: {}", id);
         Optional<Event> eventOptional = eventRepository.findById(id);
-        Event event = eventOptional.orElseThrow(() ->
-                CustomApiException.builder()
-                        .httpStatus(HttpStatus.NOT_FOUND)
-                        .message(ExceptionMessage.entityNotFound("Event"))
-                        .build());
+        Event event = eventOptional.orElseThrow(() -> {
+            logger.warn("Attempted to find a non-existing event with ID {}", id);
+            return CustomApiException.builder()
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .message(ExceptionMessage.entityNotFound(ENTITY_NAME))
+                    .build();
+        });
+
+        logger.info("Request to find event by ID: {} processed successfully", id);
 
         return eventMapper.mapToDto(event);
     }
@@ -46,33 +57,44 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventDto save(AddEventDto addEventDto) {
+        logger.info("Processing request to save a new event with name: {}", addEventDto.getName());
         eventRepository.findByName(addEventDto.getName()).ifPresent(event -> {
+            logger.warn("Event with name '{}' already exists", addEventDto.getName());
+            logger.warn("Attempted to save an already existing event with name '{}'", addEventDto.getName());
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
-                    .message(ExceptionMessage.entityAlreadyExists("Event"))
+                    .message(ExceptionMessage.entityAlreadyExists(ENTITY_NAME))
                     .build();
         });
 
         Event newEvent = eventMapper.mapToEntity(addEventDto);
+        Event savedEvent = eventRepository.save(newEvent);
+
+        logger.info("Request to save event '{}' with ID {} processed successfully", savedEvent.getName(), savedEvent.getIdEvent());
+
         return eventMapper.mapToDto(eventRepository.save(newEvent));
     }
 
     @Transactional
     @Override
     public EventDto update(Long id, EventDto updatedEventDto) {
-        Event event = eventRepository.findById(id)
-                .orElseThrow(() -> CustomApiException.builder()
-                        .httpStatus(HttpStatus.NOT_FOUND)
-                        .message(ExceptionMessage.entityNotFound("Event"))
-                        .build());
+        logger.info("Processing request to update a new event with ID: {}", id);
+        Event event = eventRepository.findById(id).orElseThrow(() -> {
+            logger.warn("Attempted to update a non-existent event with ID {}", id);
+            return CustomApiException.builder()
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .message(ExceptionMessage.entityNotFound(ENTITY_NAME))
+                    .build();
+        });
 
         boolean isConflictingEventPresent = eventRepository.findAllByName(updatedEventDto.getName()).stream()
                 .anyMatch(existingEvent -> !existingEvent.getIdEvent().equals(event.getIdEvent()));
 
         if (isConflictingEventPresent) {
+            logger.warn("Attempted to update an event with ID {} with name that already exists: {}", id, updatedEventDto.getName());
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
-                    .message(ExceptionMessage.entityAlreadyExists("Event"))
+                    .message(ExceptionMessage.entityAlreadyExists(ENTITY_NAME))
                     .build();
         }
 
@@ -83,19 +105,27 @@ public class EventServiceImpl implements EventService {
         event.setLocationName(updatedEventDto.getLocationName());
         event.setDescription(updatedEventDto.getDescription());
 
-        return eventMapper.mapToDto(eventRepository.save(event));
+        Event updatedEvent = eventRepository.save(event);
+
+        logger.info("Request to update event with ID {} processed successfully", updatedEvent.getIdEvent());
+
+        return eventMapper.mapToDto(updatedEvent);
     }
 
     @Transactional
     @Override
     public void deleteById(Long id) {
+        logger.info("Processing request to delete event with ID: {}", id);
         if (!eventRepository.existsById(id)) {
+            logger.warn("Attempted to delete a non-existent event with ID: {}", id);
             throw CustomApiException.builder()
                     .httpStatus(HttpStatus.NOT_FOUND)
-                    .message(ExceptionMessage.entityNotFound("Event"))
+                    .message(ExceptionMessage.entityNotFound(ENTITY_NAME))
                     .build();
         }
         eventRepository.deleteById(id);
+
+        logger.info("Request to delete event with ID {} processed successfully", id);
     }
 
 }
