@@ -20,3 +20,4 @@ The gateway serves a role of an entry point to two further services:
 - [AuthService](https://github.com/kanakx/ems-auth-service-spring) - Handles user authentication and authorization
   through JWT tokens
 - [DataService](https://github.com/kanakx/ems-data-service-spring) - Manages the business data layer
+- - [React Frontend Layer](https://github.com/kanakx/event-management-react) - The interactive user interface for event browsing, registration, and administration.
