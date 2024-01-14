@@ -75,7 +75,7 @@ class EventServiceImplTest {
         EventDto serviceResult = eventService.findById(id);
 
         // Then
-        assertNotNull(serviceResult);
+        assertEquals(eventDto, serviceResult);
         verify(eventRepository, times(1)).findById(id);
         verify(eventMapper, times(1)).mapToDto(event);
     }
