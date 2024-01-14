@@ -71,10 +71,10 @@ class AuthServiceImplTest {
         when(userMapper.mapToDto(user)).thenReturn(userDto);
 
         // When
-        UserDto result = authService.register(registerUserDto);
+        UserDto serviceResult = authService.register(registerUserDto);
 
         // Then
-        assertEquals(registerUserDto.getEmail(), result.getEmail());
+        assertEquals(registerUserDto.getEmail(), serviceResult.getEmail());
         verify(userRepository, times(1)).findByEmail(registerUserDto.getEmail());
         verify(userRepository, times(1)).save(any(User.class));
     }
@@ -123,10 +123,10 @@ class AuthServiceImplTest {
         when(jwtService.generateToken(user)).thenReturn(token);
 
         // When
-        TokenDto result = authService.login(loginUserDto);
+        TokenDto serviceResult = authService.login(loginUserDto);
 
         // Then
-        assertEquals(token, result.getToken());
+        assertEquals(token, serviceResult.getToken());
         verify(authenticationManager, times(1)).authenticate(any(Authentication.class));
         verify(userRepository, times(1)).findByEmail(loginUserDto.getEmail());
         verify(jwtService, times(1)).generateToken(user);
@@ -159,11 +159,11 @@ class AuthServiceImplTest {
                 .build();
 
         // When
-        TokenValidationResponseDto result = authService.validateToken(validTokenDto);
+        TokenValidationResponseDto serviceResult = authService.validateToken(validTokenDto);
 
         // Then
-        assertTrue(result.getIsValid());
-        assertEquals(validToken, result.getToken());
+        assertTrue(serviceResult.getIsValid());
+        assertEquals(validToken, serviceResult.getToken());
         verify(jwtService, times(1)).validateToken(validToken);
     }
 
