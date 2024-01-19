@@ -23,7 +23,7 @@ Due to university reasons I had to develop the same architecture in monolith [he
 - Spring Boot
 - Spring Security
 - Hibernate
-- JWT
 - PostreSQL
 - MySQL
 - Docker
+- JWT
