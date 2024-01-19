@@ -10,7 +10,7 @@ This project is a simple implementation of a Eureka Server for service discovery
 ## Related Services
 Explore the microservices registered with this Eureka Server:
 
-1. **[API Gateway](https://github.com/kanakx/ems-api-gateway-spring)** - Serves as the entry point, routing requests to appropriate services.
+1. **[API Gateway](https://github.com/kanakx/ems-api-gateway-spring)** - Serves as the entry point, routing requests to appropriate services
 2. **[Auth Service](https://github.com/kanakx/ems-auth-service-spring)** - Handles user authentication and authorization through JWT tokens
 3. **[Data Service](https://github.com/kanakx/ems-data-service-spring)** - Manages the business data layer
-4. **[React Frontend Layer](https://github.com/kanakx/event-management-react)** - The interactive user interface for event browsing, registration, and administration.
+4. **[React Frontend Layer](https://github.com/kanakx/event-management-react)** - The interactive user interface for event browsing, registration, and administration
