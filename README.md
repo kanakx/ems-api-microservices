@@ -6,17 +6,19 @@ This monorepo contains all the microservices that make up the Event Management S
 
 Due to university reasons I had to develop the same architecture in monolith [here](https://github.com/kanakx/ems-api-spring.git).
 
-## Microservices
+## Backend microservices
 
-1. **API Gateway**: Serves as the central entry point for the EMS, routing requests to the appropriate microservices through authentication filter.
+- **API Gateway**: Serves as the central entry point for the EMS, routing requests to the appropriate microservices through authentication filter.
 
-2. **Auth Service**: Manages user authentication and authorization using JWT tokens.
+- **Auth Service**: Manages user authentication and authorization using JWT tokens.
 
-3. **Data Service**: Handles the storage, processing, and retrieval of business data.
+- **Data Service**: Handles the storage, processing, and retrieval of business data.
 
-4. **React Frontend**: Provides the user interface for event browsing, login, registration, and administration.
+## Frontend
 
-# Technologies and tools
+[**React Frontend**](https://github.com/kanakx/ems-react.git): Provides the user interface for event browsing, login, registration, and administration.
+
+## Technologies and tools
 
 - Spring Boot
 - Spring Security
