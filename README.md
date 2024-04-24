@@ -2,9 +2,7 @@
 
 ## Overview
 
-This monorepo contains all the microservices that make up the Event Management System (EMS). EMS is designed to offer a simple solution for event management, encompassing user authentication, data management, and an API gateway. 
-
-Due to university reasons I had to develop the same architecture in monolith [here](https://github.com/kanakx/ems-api-spring.git).
+This monorepo contains all the microservices that make up the Event Management System (EMS). EMS is designed to offer a simple solution for event management, encompassing user authentication, data management, and an API Gateway. 
 
 ## Backend microservices
 
